@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+.env
+*.log
+coverage/
+.codex-bridge-state/
+vendor/codex-plugin-cc/.git/
