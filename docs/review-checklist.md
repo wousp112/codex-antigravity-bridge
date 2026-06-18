@@ -2,14 +2,12 @@
 
 Use this checklist before publishing a release.
 
-- Setup parity: `codex_setup` reports Node, npm, Codex, auth, runtime state.
-- Review parity: `codex_review` supports working tree and base branch review.
-- Adversarial parity: `codex_adversarial_review` accepts focus text and uses the original prompt/schema path.
-- Rescue parity: `codex_rescue` supports foreground/background, write/read-only, resume/fresh, model, and effort.
-- Resume parity: `codex_resume_candidate` exposes the original `task-resume-candidate` helper.
-- Job parity: `codex_status`, `codex_result`, and `codex_cancel` operate on the same companion state.
-- Antigravity parity: `antigravity/mcp_config.example.json` points to `dist/src/index.js`.
-- Skill parity: `antigravity/skills/codex-bridge/SKILL.md` tells Antigravity when to call each tool.
-- Safety: write mode is opt-in and review tools are read-only.
-- Auditability: original Claude commands, agent, hooks, runtime, prompts, and schema are vendored for comparison.
-- Packaging: `npm test` passes and `npm pack --dry-run` includes runtime, docs, and Antigravity assets.
+- Plugin parity: root `plugin.json` exists and `agy plugin validate .` passes.
+- Install parity: `npm run plugin:install` copies the full runtime to the Antigravity plugin root and registers it.
+- Command parity: 7 root `commands/*.md` files exist and call `scripts/codex-companion.mjs` directly.
+- Agent parity: `agents/codex-rescue.md` remains a thin forwarder and does not inspect or solve work itself.
+- Skill parity: original internal skills exist under `skills/` and preserve rescue/runtime constraints.
+- Runtime parity: root `scripts/` contains the companion runtime and original support libraries.
+- Hook parity: root `hooks.json` validates; unsupported Stop blocking behavior is documented instead of overstated.
+- Legacy MCP: MCP server tests still pass, but docs mark MCP as optional/legacy.
+- Packaging: `npm test`, `npm run typecheck`, `npm run plugin:validate`, `npm run plugin:install`, and `npm pack --dry-run` pass.

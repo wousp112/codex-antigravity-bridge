@@ -35,6 +35,31 @@ test("vendored companion runtime has required identity and entrypoint files", ()
   assert.equal(fs.existsSync(path.join(VENDOR_ROOT, "schemas", "review-output.schema.json")), true);
 });
 
+test("root Antigravity plugin surfaces preserve command-first entrypoints", () => {
+  const requiredFiles = [
+    ".claude-plugin/plugin.json",
+    "plugin.json",
+    "commands/review.md",
+    "commands/rescue.md",
+    "commands/status.md",
+    "agents/codex-rescue.md",
+    "skills/codex-cli-runtime/SKILL.md",
+    "hooks.json",
+    "scripts/codex-companion.mjs"
+  ];
+
+  for (const file of requiredFiles) {
+    assert.equal(fs.existsSync(path.resolve(file)), true, file);
+  }
+
+  const reviewCommand = fs.readFileSync(path.resolve("commands", "review.md"), "utf8");
+  const rescueAgent = fs.readFileSync(path.resolve("agents", "codex-rescue.md"), "utf8");
+  assert.equal(reviewCommand.includes("CLAUDE_PLUGIN_ROOT"), false);
+  assert.equal(rescueAgent.includes("CLAUDE_PLUGIN_ROOT"), false);
+  assert.equal(reviewCommand.includes("CODEX_PLUGIN_ROOT"), true);
+  assert.equal(rescueAgent.includes("CODEX_PLUGIN_ROOT"), true);
+});
+
 test("rescue defaults to write-capable unless the prompt is clearly read-only", () => {
   assert.equal(defaultRescueWrite({ prompt: "fix the failing tests" }), true);
   assert.equal(defaultRescueWrite({ prompt: "继续实现这个移植版本" }), true);

@@ -5,7 +5,7 @@
    Impact: an Antigravity/manual MCP call for “fix this” can silently run read-only unless the model remembers to set `write: true`.
 
 2. **Medium: resume-candidate negotiation is not ported as a functional surface.**  
-   Upstream `/codex:rescue` calls `task-resume-candidate --json` and asks continue-vs-new-thread when needed: [/plugins/codex/commands/rescue.md](/Users/wousp/General%20Chatbox/research/codex-plugin-cc/plugins/codex/commands/rescue.md:23). Local bridge exposes only `resume`/`fresh` booleans and a skill heuristic: [src/schemas.ts](/Users/wousp/General%20Chatbox/codex-antigravity-bridge/src/schemas.ts:46), [antigravity/skills/codex-bridge/SKILL.md](/Users/wousp/General%20Chatbox/codex-antigravity-bridge/antigravity/skills/codex-bridge/SKILL.md:27).  
+   Upstream `/codex:rescue` calls `task-resume-candidate --json` and asks continue-vs-new-thread when needed: [/plugins/codex/commands/rescue.md](/Users/wousp/General%20Chatbox/research/codex-plugin-cc/plugins/codex/commands/rescue.md:23). The v1 MCP bridge exposed only `resume`/`fresh` booleans and a skill heuristic: [src/schemas.ts](/Users/wousp/General%20Chatbox/codex-antigravity-bridge/src/schemas.ts:46), [legacy-mcp/antigravity/skills/codex-bridge/SKILL.md](/Users/wousp/General%20Chatbox/codex-antigravity-bridge/legacy-mcp/antigravity/skills/codex-bridge/SKILL.md:27).
    Impact: Antigravity cannot reliably reproduce upstream’s “candidate exists, ask once” behavior without a dedicated MCP tool or status field.
 
 3. **Medium: setup exposes review-gate toggles even though Antigravity hook parity is deferred.**  
@@ -13,7 +13,7 @@
    Impact: users can toggle state that has no Antigravity enforcement effect, which is misleading for setup parity.
 
 4. **Low: review/background command glue is thinner than upstream.**  
-   Upstream review commands inspect git status/diff and ask wait-vs-background with a recommendation: [/plugins/codex/commands/review.md](/Users/wousp/General%20Chatbox/research/codex-plugin-cc/plugins/codex/commands/review.md:18). Local skill only says broad/unclear reviews should prefer background: [antigravity/skills/codex-bridge/SKILL.md](/Users/wousp/General%20Chatbox/codex-antigravity-bridge/antigravity/skills/codex-bridge/SKILL.md:26), while the tool default is foreground: [src/schemas.ts](/Users/wousp/General%20Chatbox/codex-antigravity-bridge/src/schemas.ts:21).  
+   Upstream review commands inspect git status/diff and ask wait-vs-background with a recommendation: [/plugins/codex/commands/review.md](/Users/wousp/General%20Chatbox/research/codex-plugin-cc/plugins/codex/commands/review.md:18). The v1 MCP skill only said broad/unclear reviews should prefer background: [legacy-mcp/antigravity/skills/codex-bridge/SKILL.md](/Users/wousp/General%20Chatbox/codex-antigravity-bridge/legacy-mcp/antigravity/skills/codex-bridge/SKILL.md:26), while the tool default was foreground: [src/schemas.ts](/Users/wousp/General%20Chatbox/codex-antigravity-bridge/src/schemas.ts:21).
    Impact: usable, but not full command-behavior parity.
 
 5. **Low: package lock metadata is stale for the bin path.**  
@@ -35,3 +35,16 @@ Residual risks: no tests currently exercise actual MCP `callTool` behavior for s
 - Fixed Low 5: refreshed `package-lock.json`; the bin path now records `dist/src/index.js`.
 - Added audit material: vendored original Claude command, subagent, and hook text under `vendor/openai-codex-claude-plugin/`.
 - Added tests for the new tool list, vendored source references, rescue write defaulting, and setup review-gate filtering.
+
+## V2 Philosophy Correction
+
+The v1 MCP-first migration was functional but did not preserve the original
+plugin's technical path. V2 corrects the migration target:
+
+- primary route is now Antigravity plugin layout with root `plugin.json`;
+- original `commands/`, `agents/`, `skills/`, `prompts/`, `schemas/`, and
+  `scripts/` are present at the plugin root;
+- `agy plugin validate .` processes 7 commands, 1 agent, 3 skills, and root hooks;
+- the TypeScript MCP server remains only as a legacy adapter;
+- Stop-gate hook semantics are treated as partially verified until Antigravity
+  runtime payload and blocking behavior are tested end to end.

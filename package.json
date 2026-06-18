@@ -1,7 +1,7 @@
 {
   "name": "codex-antigravity-bridge",
   "version": "0.1.0",
-  "description": "Antigravity MCP bridge for the OpenAI Codex Claude Code plugin workflow.",
+  "description": "Plugin-first Antigravity port of the OpenAI Codex Claude Code plugin workflow.",
   "type": "module",
   "license": "Apache-2.0",
   "bin": {
@@ -9,8 +9,17 @@
   },
   "files": [
     "dist/",
-    "antigravity/",
+    ".claude-plugin/",
+    "agents/",
+    "commands/",
     "docs/",
+    "hooks.json",
+    "legacy-mcp/",
+    "plugin.json",
+    "prompts/",
+    "schemas/",
+    "scripts/",
+    "skills/",
     "vendor/openai-codex-claude-plugin/",
     "README.md",
     "LICENSE",
@@ -20,6 +29,8 @@
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && node --test dist/tests/*.test.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "plugin:install": "node scripts/install-antigravity-plugin.mjs",
+    "plugin:validate": "agy plugin validate .",
     "start": "node dist/src/index.js",
     "smoke:tools": "node dist/tests/smoke-list-tools.test.js"
   },
