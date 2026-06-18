@@ -5,8 +5,7 @@
 
 The original project is a Claude Code plugin built around slash commands,
 agents, skills, hooks, and a thin `codex-companion.mjs` runtime. This port keeps
-that architecture as the primary path. The older MCP bridge remains as an
-optional legacy adapter, not the main user experience.
+that architecture directly. It does not expose a companion MCP server.
 
 ## What It Ports
 
@@ -18,7 +17,7 @@ optional legacy adapter, not the main user experience.
 | `/codex:rescue` | `commands/rescue.md` routing to `agents/codex-rescue.md` |
 | `codex:codex-rescue` subagent | `agents/codex-rescue.md` thin forwarder |
 | `codex-cli-runtime` skill | `skills/codex-cli-runtime/SKILL.md` |
-| prompt helper skills | `skills/gpt-5-4-prompting/` and `skills/codex-result-handling/` |
+| prompt helper skills | `skills/codex-prompting/` and `skills/codex-result-handling/` |
 | Claude Stop review gate | root `hooks.json` plus adapted hook scripts, subject to Antigravity hook behavior |
 | Codex companion runtime | `scripts/codex-companion.mjs` and `scripts/lib/` |
 
@@ -65,11 +64,30 @@ export CODEX_PLUGIN_ROOT="/absolute/path/to/codex-antigravity-bridge"
 
 ```bash
 npm install
-npm run typecheck
 npm test
 npm run plugin:validate
 npm run plugin:install
 ```
+
+## Model And Effort
+
+The plugin leaves the Codex model unset by default. That preserves the original
+plugin behavior and lets the local Codex runtime choose its configured default.
+
+For rescue/task runs, pass an explicit model when needed:
+
+```text
+/codex:rescue --model gpt-5.5 --effort high fix the failing tests
+```
+
+`--effort` is accepted only by the rescue/task path and supports:
+
+```text
+none, minimal, low, medium, high, xhigh
+```
+
+Review commands use Codex's native review path. Codex may choose a review model
+separately from the rescue/task model.
 
 ## Design Boundary
 
@@ -78,8 +96,9 @@ the original plugin's progressive-disclosure design: command text loads only
 when invoked, rescue delegates to a thin subagent, and the subagent calls the
 companion runtime once.
 
-The TypeScript MCP server under `src/` is kept for compatibility with MCP-only
-surfaces. It is not the preferred Antigravity path.
+No MCP bridge is shipped. X Search and CUA driver can still be installed as
+separate Antigravity MCP servers, but they are independent from this Codex
+plugin.
 
 Hook support is included through `hooks.json`, but stop-gate blocking behavior
 must be treated as verified only on Antigravity versions that process the hook

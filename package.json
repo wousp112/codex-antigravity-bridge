@@ -4,17 +4,12 @@
   "description": "Plugin-first Antigravity port of the OpenAI Codex Claude Code plugin workflow.",
   "type": "module",
   "license": "Apache-2.0",
-  "bin": {
-    "codex-antigravity-bridge": "./dist/src/index.js"
-  },
   "files": [
-    "dist/",
     ".claude-plugin/",
     "agents/",
     "commands/",
     "docs/",
     "hooks.json",
-    "legacy-mcp/",
     "plugin.json",
     "prompts/",
     "schemas/",
@@ -26,21 +21,9 @@
     "NOTICE"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "test": "npm run build && node --test dist/tests/*.test.js",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test tests/*.test.mjs",
     "plugin:install": "node scripts/install-antigravity-plugin.mjs",
-    "plugin:validate": "agy plugin validate .",
-    "start": "node dist/src/index.js",
-    "smoke:tools": "node dist/tests/smoke-list-tools.test.js"
-  },
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "1.29.0",
-    "zod": "3.25.76"
-  },
-  "devDependencies": {
-    "@types/node": "24.10.1",
-    "typescript": "5.9.3"
+    "plugin:validate": "agy plugin validate ."
   },
   "engines": {
     "node": ">=18.18"

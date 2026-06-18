@@ -9,5 +9,5 @@ Use this checklist before publishing a release.
 - Skill parity: original internal skills exist under `skills/` and preserve rescue/runtime constraints.
 - Runtime parity: root `scripts/` contains the companion runtime and original support libraries.
 - Hook parity: root `hooks.json` validates; unsupported Stop blocking behavior is documented instead of overstated.
-- Legacy MCP: MCP server tests still pass, but docs mark MCP as optional/legacy.
-- Packaging: `npm test`, `npm run typecheck`, `npm run plugin:validate`, `npm run plugin:install`, and `npm pack --dry-run` pass.
+- No-MCP parity: no `src/`, `legacy-mcp/`, MCP SDK dependency, package bin, or MCP config example is shipped.
+- Packaging: `npm test`, `npm run plugin:validate`, `npm run plugin:install`, and `npm pack --dry-run` pass.

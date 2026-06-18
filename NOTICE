@@ -3,5 +3,5 @@ codex-antigravity-bridge
 This project includes and adapts the Codex Companion runtime from
 openai/codex-plugin-cc, copyright OpenAI, under the Apache License 2.0.
 
-The Antigravity MCP bridge and migration documentation are authored as a
+The Antigravity plugin port and migration documentation are authored as a
 compatibility layer around that runtime.

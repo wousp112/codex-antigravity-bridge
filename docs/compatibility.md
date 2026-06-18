@@ -2,7 +2,7 @@
 
 This is the migration contract for the Antigravity port. The goal is to preserve
 the original command/agent/skill/hook philosophy from `openai/codex-plugin-cc`,
-not to replace it with an MCP-first tool catalog.
+not to replace it with a tool catalog.
 
 | Feature | Original behavior | Antigravity port | Status |
 | --- | --- | --- | --- |
@@ -16,7 +16,7 @@ not to replace it with an MCP-first tool catalog.
 | Companion runtime | `scripts/codex-companion.mjs` stores jobs and talks to Codex | same runtime, with Antigravity data fallback support | Supported |
 | Status/result/cancel | command files call the companion runtime directly | adapted command files call the runtime directly | Supported |
 | Hooks | Claude `hooks/hooks.json` registers SessionStart, SessionEnd, and Stop | root `hooks.json`; validator processes hooks, but exact Stop blocking semantics need runtime proof | Partially verified |
-| MCP bridge | not part of the original design | retained under `src/` as optional legacy adapter | Legacy |
+| MCP bridge | not part of the original design | not shipped | Removed |
 
 ## Route Contract
 
@@ -45,12 +45,12 @@ Gate State:
 
 Stop Rule:
 - Stop if `agy plugin validate .` does not process commands, agents, and skills.
-- Stop if command text falls back to MCP as the primary route.
+- Stop if command text falls back to any external tool catalog as the primary route.
 - Stop before claiming complete Stop-gate parity unless representative hook behavior was tested.
 
 Completion Check:
 - `agy plugin validate .` passes.
 - `npm run plugin:install` copies the full runtime to the default plugin root and registers the plugin.
-- `npm test` and `npm run typecheck` pass.
+- `npm test` passes.
 - A direct companion command works with `CODEX_PLUGIN_ROOT` set to this repo.
 - Documentation states any remaining hook limitation plainly.
