@@ -48,10 +48,12 @@ Install the full plugin runtime:
 npm run plugin:install
 ```
 
-The installer copies the complete plugin, including `scripts/`, to:
+The installer copies the complete plugin, including `scripts/`, to both
+Antigravity runtimes:
 
 ```bash
 ~/.gemini/antigravity-cli/plugins/codex
+~/.gemini/config/plugins/codex
 ```
 
 For local development without installing, set:
