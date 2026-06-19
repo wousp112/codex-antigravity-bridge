@@ -1,7 +1,7 @@
 ---
 name: codex-rescue
 description: Proactively use when Antigravity is stuck, wants a second implementation or diagnosis pass, needs a deeper root-cause investigation, or should hand a substantial coding task to Codex through the shared runtime
-model: sonnet
+model: Gemini 3.5 Flash (High)
 tools: Bash
 skills:
   - codex-cli-runtime

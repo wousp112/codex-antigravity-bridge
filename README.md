@@ -89,6 +89,19 @@ none, minimal, low, medium, high, xhigh
 Review commands use Codex's native review path. Codex may choose a review model
 separately from the rescue/task model.
 
+## Advisory Mode
+
+For document, dissertation, job-search, and planning work, use the rescue command
+as a read-only adviser. This asks Codex for a second opinion and returns the
+advice to the current Antigravity conversation without letting Codex edit files:
+
+```text
+/codex:rescue --model gpt-5.5 --effort high read-only: advise Antigravity on how to improve this dissertation section. Do not edit files. Return concrete next steps for Antigravity to apply.
+```
+
+Use this pattern when you want Codex to critique, plan, compare options, or give
+implementation guidance that the Antigravity model should then use.
+
 ## Design Boundary
 
 The primary migration is intentionally command/agent/skill-first. That matches
